@@ -1,12 +1,12 @@
 import sys
-# Lib of DL
-from DQNModel import DQN
-from MinerEnv import MinerEnv
-from Memory import Memory
+from DQNModel import DQN # A class of creating a deep q-learning model
+from MinerEnv import MinerEnv # A class of creating a communication environment between the DQN model and the GameMiner environment (GAME_SOCKET_DUMMY.py)
+from Memory import Memory # A class of creating a batch in order to store experiences for the training process
 
 import pandas as pd
-import datetime
+import datetime 
 import numpy as np
+
 
 HOST = "localhost"
 PORT = 1111
@@ -15,32 +15,33 @@ if len(sys.argv) == 3:
     PORT = int(sys.argv[2])
 
 # Create header for saving DQN learning file
-now = datetime.datetime.now()
-header = ["Ep", "Step", "Reward", "Total_reward", "Action", "Epsilon", "Done", "Termination_Code"]
-filename = "Data/data_" + now.strftime("%Y%m%d-%H%M") + ".csv"
+now = datetime.datetime.now() #Getting the latest datetime
+header = ["Ep", "Step", "Reward", "Total_reward", "Action", "Epsilon", "Done", "Termination_Code"] #Defining header for the save file
+filename = "Data/data_" + now.strftime("%Y%m%d-%H%M") + ".csv" 
 with open(filename, 'w') as f:
     pd.DataFrame(columns=header).to_csv(f, encoding='utf-8', index=False, header=True)
 
-# Parameters for DQN
-N_EPISODE = 10000
-MAX_STEP = 1000
-BATCH_SIZE = 32
-MEMORY_SIZE = 100000
-SAVE_NETWORK = 100  # 100Episodes
-INITIAL_REPLAY_SIZE = 50000
-INPUTNUM = 198
-ACTIONNUM = 6
-MAP_MAX_X = 21
-MAP_MAX_Y = 9
-# Initialize network and memory
+# Parameters for training a DQN model
+N_EPISODE = 10000 #The number of episodes for training
+MAX_STEP = 1000   #The number of steps for each episode
+BATCH_SIZE = 32   #The number of experiences for each replay 
+MEMORY_SIZE = 100000 #The size of the batch for storing experiences
+SAVE_NETWORK = 100  # After this number of episodes, the DQN model is saved for testing later. 
+INITIAL_REPLAY_SIZE = 1000 #The number of experiences are stored in the memory batch before starting replaying
+INPUTNUM = 198 #The number of input values for the DQN model
+ACTIONNUM = 6  #The number of actions output from the DQN model
+MAP_MAX_X = 21 #Width of the Map
+MAP_MAX_Y = 9  #Height of the Map
+
+# Initialize a DQN model and a memory batch for storing experiences
 DQNAgent = DQN(INPUTNUM, ACTIONNUM)
 memory = Memory(MEMORY_SIZE)
 
 # Initialize environment
-minerEnv = MinerEnv(HOST, PORT)
+minerEnv = MinerEnv(HOST, PORT) 
 minerEnv.start()  # Connect to the game
 
-train = False
+train = False #
 # Training
 for episode_i in range(0, N_EPISODE):
     try:
