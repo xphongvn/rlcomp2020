@@ -3,18 +3,16 @@ import numpy as np
 from GAME_SOCKET_DUMMY import GameSocket #in testing version, please use GameSocket instead of GAME_SOCKET_DUMMY
 from MINER_STATE import State
 
+
 TreeID = 1
 TrapID = 2
 SwampID = 3
-
-
 class MinerEnv:
     def __init__(self, host, port):
         self.socket = GameSocket(host, port)
         self.state = State()
-        self.score_pre = self.state.score
-        self.pos_x_pre = self.state.x
-        self.pos_y_pre = self.state.y
+        
+        self.score_pre = self.state.score#Storing the last score for designing the reward function
 
     def start(self): #connect to server
         self.socket.connect()
@@ -90,9 +88,6 @@ class MinerEnv:
             reward += -10
         if self.state.energy < 0:
             reward += -10
-
-        self.pos_x_pre = self.state.x
-        self.pos_y_pre = self.state.y
         # print ("reward",reward)
         return reward
 
