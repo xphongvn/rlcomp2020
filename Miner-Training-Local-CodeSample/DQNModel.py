@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-
 import numpy as np
-#import tensorflow
-#import keras
 from keras.models import Sequential
 from keras.models import model_from_json
 from keras.layers import Dense, Activation
@@ -17,16 +14,16 @@ class DQN:
    
     def __init__(
             self,
-            input_dim,
-            action_space,
-            gamma = 0.99,
-            epsilon = 1,
-            epsilon_min = 0.01,
-            epsilon_decay = 0.999,
-            learning_rate = 0.00025,
-            tau = 0.125,
-            model = None,
-            target_model = None,
+            input_dim, #The number of inputs for the DQN network
+            action_space, #The number of actions for the DQN network
+            gamma = 0.99, #The discount factor
+            epsilon = 1, #Epsilon - the exploration factor
+            epsilon_min = 0.01, #The minimum epsilon 
+            epsilon_decay = 0.999,#The decay epislon for each update_epsilon time
+            learning_rate = 0.00025, #The learning rate for the DQN network
+            tau = 0.125, #The factor for updating the DQN target network from the DQN network
+            model = None, #The DQN model
+            target_model = None, #The DQN target model 
             sess=None
             
     ):
@@ -40,8 +37,9 @@ class DQN:
       self.tau = tau
             
       #Creating networks
-      self.model        = self.create_model()
-      self.target_model = self.create_model()
+      self.model        = self.create_model() #Creating the DQN model
+      self.target_model = self.create_model() #Creating the DQN target model
+      
       #Tensorflow GPU optimization
       config = tf.ConfigProto()
       config.gpu_options.allow_growth = True
@@ -50,6 +48,9 @@ class DQN:
       self.sess.run( tf.initialize_all_variables()) 
       
     def create_model(self):
+      #Creating the network
+      #Two hidden layers (300,300), their activation is ReLu
+      #One output layer with action_space of nodes, activation is linear.
       model = Sequential()
       model.add(Dense(300, input_dim=self.input_dim))
       model.add(Activation('relu'))
