@@ -78,7 +78,10 @@ class MinerEnv:
         score_action = self.state.score - self.score_pre
         self.score_pre = self.state.score
         if score_action > 0:
+            #If the DQN agent crafts golds, then it should obtain a positive reward (equal score_action)
             reward += score_action
+            
+        #If the DQN agent crashs into obstacels (Tree, Trap, Swamp), then it should be punished by a negative reward
         if self.state.mapInfo.get_obstacle(self.state.x, self.state.y) == TreeID:  # Tree
             reward -= TreeID
         if self.state.mapInfo.get_obstacle(self.state.x, self.state.y) == TrapID:  # Trap
@@ -86,13 +89,17 @@ class MinerEnv:
         if self.state.mapInfo.get_obstacle(self.state.x, self.state.y) == SwampID:  # Swamp
             reward -= SwampID
 
-        # Checking out of the map
+        # If out of the map, then the DQN agent should be punished by a larger nagative reward.
         if self.state.x > self.state.mapInfo.max_x or self.state.x < 0 or self.state.y > self.state.mapInfo.max_y or self.state.y < 0:
             reward += -10
+            
+        #Run out of energy, then the DQN agent should be punished by a larger nagative reward.
         if self.state.energy < 0:
             reward += -10
         # print ("reward",reward)
         return reward
 
     def check_terminate(self):
+        #Checking the status of the game
+        #it indicates the game ends or is playing
         return self.state.status != State.STATUS_PLAYING
