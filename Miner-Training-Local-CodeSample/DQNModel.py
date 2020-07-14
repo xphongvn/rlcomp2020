@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from warnings import simplefilter 
+simplefilter(action='ignore', category=FutureWarning)
+
 import numpy as np
 from keras.models import Sequential
 from keras.models import model_from_json
@@ -41,11 +44,11 @@ class DQN:
       self.target_model = self.create_model() #Creating the DQN target model
       
       #Tensorflow GPU optimization
-      config = tf.ConfigProto()
+      config = tf.compat.v1.ConfigProto()
       config.gpu_options.allow_growth = True
-      self.sess = tf.Session(config=config)
+      self.sess = tf.compat.v1.Session(config=config)
       K.set_session(sess)
-      self.sess.run( tf.initialize_all_variables()) 
+      self.sess.run( tf.compat.v1.global_variables_initializer()) 
       
     def create_model(self):
       #Creating the network
