@@ -81,7 +81,7 @@ class State:
     def __init__(self):
         self.end = False
         self.score = 0
-        self.state = None
+        self.lastAction = None
         self.id = 0
         self.x = 0
         self.y = 0
@@ -95,7 +95,7 @@ class State:
         game_info = str_2_json(data)
         self.end = False
         self.score = 0
-        self.state = None
+        self.lastAction = None
         self.id = game_info["playerId"]
         self.x = game_info["posx"]
         self.y = game_info["posy"]
@@ -115,7 +115,7 @@ class State:
                 self.y = player["posy"]
                 self.energy = player["energy"]
                 self.score = player["score"]
-                self.state = player["state"]
+                self.lastAction = player["lastAction"]
                 self.status = player["status"]
 
         self.mapInfo.update(new_state["golds"], new_state["changedObstacles"])

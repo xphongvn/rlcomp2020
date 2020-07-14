@@ -9,7 +9,7 @@ class PlayerInfo:
         self.energy = 0
         self.posx = 0
         self.posy = 0
-        self.state = -1
+        self.lastAction = -1
         self.status = 0
         self.freeCount = 0
 

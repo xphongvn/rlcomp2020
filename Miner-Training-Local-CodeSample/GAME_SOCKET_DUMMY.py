@@ -51,7 +51,7 @@ class PlayerInfo:
         self.energy = 0
         self.posx = 0
         self.posy = 0
-        self.state = -1
+        self.lastAction = -1
         self.status = PlayerInfo.STATUS_PLAYING
         self.freeCount = 0
 
@@ -102,6 +102,8 @@ class GameSocket:
     bog_energy_chain = {-5: -20, -20: -40, -40: -100, -100: -100}
 
     def __init__(self, host, port):
+        self.stepCount = 0
+        self.maxStep = 0
         self.mapdir = "Maps"  # where to load all pre-defined maps
         self.mapid = ""
         self.userMatch = UserMatch()
@@ -135,9 +137,10 @@ class GameSocket:
         self.userMatch.posy = int(requests[2])
         self.userMatch.energy = int(requests[3])
         self.userMatch.gameinfo.steps = int(requests[4])
+        self.maxStep = self.userMatch.gameinfo.steps
 
-        #init data for players
-        self.user.posx = self.userMatch.posx # in
+        # init data for players
+        self.user.posx = self.userMatch.posx  # in
         self.user.posy = self.userMatch.posy
         self.user.energy = self.userMatch.energy
         self.user.status = PlayerInfo.STATUS_PLAYING
@@ -146,8 +149,9 @@ class GameSocket:
         self.E = self.userMatch.energy
         self.resetFlag = True
         self.init_bots()
+        self.stepCount = 0
 
-    def reset_map(self, id): # load map info
+    def reset_map(self, id):  # load map info
         self.mapId = id
         self.map = json.loads(self.maps[self.mapId])
         self.userMatch = self.map_info(self.map)
@@ -161,7 +165,7 @@ class GameSocket:
                 else:  # obstacles
                     self.energyOnMap[x][y] = ObstacleInfo.types[self.map[x][y]]
 
-    def connect(self): # simulate player's connect request
+    def connect(self):  # simulate player's connect request
         print("Connected to server.")
         # load all pre-defined maps from mapDir
         for filename in os.listdir(self.mapdir):
@@ -169,7 +173,7 @@ class GameSocket:
             with open(os.path.join(self.mapdir, filename), 'r') as f:
                 self.maps[filename] = f.read()
 
-    def map_info(self, map): # get map info
+    def map_info(self, map):  # get map info
         # print(map)
         userMatch = UserMatch()
         userMatch.gameinfo.height = len(map)
@@ -178,13 +182,13 @@ class GameSocket:
         while i < len(map):
             j = 0
             while j < len(map[i]):
-                if map[i][j] > 0: # gold
+                if map[i][j] > 0:  # gold
                     g = GoldInfo()
                     g.posx = j
                     g.posy = i
                     g.amount = map[i][j]
                     userMatch.gameinfo.golds.append(g)
-                else:# obstacles
+                else:  # obstacles
                     o = ObstacleInfo()
                     o.posx = j
                     o.posy = i
@@ -195,28 +199,32 @@ class GameSocket:
             i += 1
         return userMatch
 
-    def receive(self): # send data to player (simulate player's receive request)
-        if self.resetFlag: # for the first time -> send game info
+    def receive(self):  # send data to player (simulate player's receive request)
+        if self.resetFlag:  # for the first time -> send game info
             self.resetFlag = False
             data = self.userMatch.to_json()
             for (bot) in self.bots:
                 bot.new_game(data)
             # print(data)
             return data
-        else: # send step state
+        else:  # send step state
+            self.stepCount = self.stepCount + 1
+            if self.stepCount >= self.maxStep:
+                for player in self.stepState.players:
+                    player.status = PlayerInfo.STATUS_STOP_END_STEP
             data = self.stepState.to_json()
-            for (bot) in self.bots: # update bots' state
+            for (bot) in self.bots:  # update bots' state
                 bot.new_state(data)
             # print(data)
             return data
 
-    def send(self, message): # receive message from player (simulate send request from player)
-        if message.isnumeric(): # player send action
+    def send(self, message):  # receive message from player (simulate send request from player)
+        if message.isnumeric():  # player send action
             self.resetFlag = False
             self.stepState.changedObstacles = []
             action = int(message)
             # print("Action = ", action)
-            self.user.state = action
+            self.user.lastAction = action
             self.craftUsers = []
             self.step_action(self.user, action)
             for bot in self.bots:
@@ -246,9 +254,9 @@ class GameSocket:
         func = switcher.get(action, self.invalidAction)
         func(user)
 
-    def action_5_craft_pre(self, user): # collect players who craft at current step
+    def action_5_craft_pre(self, user):  # collect players who craft at current step
         user.freeCount = 0
-        if self.map[user.posy][user.posx] <= 0: # craft at the non-gold cell
+        if self.map[user.posy][user.posx] <= 0:  # craft at the non-gold cell
             user.energy -= 10
             if user.energy <= 0:
                 user.status = PlayerInfo.STATUS_ELIMINATED_OUT_OF_ENERGY
@@ -265,7 +273,7 @@ class GameSocket:
             else:
                 user.status = PlayerInfo.STATUS_ELIMINATED_OUT_OF_ENERGY
 
-    def action_0_left(self, user): # user go left
+    def action_0_left(self, user):  # user go left
         user.freeCount = 0
         user.posx = user.posx - 1
         if user.posx < 0:
@@ -273,7 +281,7 @@ class GameSocket:
         else:
             self.go_to_pos(user)
 
-    def action_1_right(self, user): # user go right
+    def action_1_right(self, user):  # user go right
         user.freeCount = 0
         user.posx = user.posx + 1
         if user.posx >= self.userMatch.gameinfo.width:
@@ -281,7 +289,7 @@ class GameSocket:
         else:
             self.go_to_pos(user)
 
-    def action_2_up(self, user): # user go up
+    def action_2_up(self, user):  # user go up
         user.freeCount = 0
         user.posy = user.posy - 1
         if user.posy < 0:
@@ -289,7 +297,7 @@ class GameSocket:
         else:
             self.go_to_pos(user)
 
-    def action_3_down(self, user): # user go right
+    def action_3_down(self, user):  # user go right
         user.freeCount = 0
         user.posy = user.posy + 1
         if user.posy >= self.userMatch.gameinfo.height:
@@ -297,7 +305,7 @@ class GameSocket:
         else:
             self.go_to_pos(user)
 
-    def action_4_free(self, user): # user free
+    def action_4_free(self, user):  # user free
         user.freeCount += 1
         if user.freeCount == 1:
             user.energy += int(self.E / 4)
@@ -341,14 +349,15 @@ class GameSocket:
                                 self.stepState.golds.remove(g)
                                 self.add_changed_obstacle(x, y, 0, ObstacleInfo.types[0])
                                 if len(self.stepState.golds) == 0:
-                                    self.stepState.gameEnd = True
+                                    for player in self.stepState.players:
+                                        player.status = PlayerInfo.STATUS_STOP_EMPTY_GOLD
                             break;
             self.craftMap = {}
 
     def invalidAction(self, user):
         user.status = PlayerInfo.STATUS_ELIMINATED_INVALID_ACTION
 
-    def go_to_pos(self, user): # player move to cell(x,y)
+    def go_to_pos(self, user):  # player move to cell(x,y)
         if self.map[user.posy][user.posx] == -1:
             user.energy -= randrange(16) + 5
         elif self.map[user.posy][user.posx] == 0:
