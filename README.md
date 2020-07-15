@@ -62,7 +62,7 @@ d)	Maps: The Maps folder. It containing 05 sample maps for training. Information
 
     - Each file in the Maps folder is considered a map, the filename is the map name.
     
-    - Each map is a matrix of integers with the following meanings:
+    - Each map is a matrix of integers with the following meanings: 0: Land; -1: Woods; -2:	Trap; -3: Swamp; >0: Gold
     
     - Select a training map as follows:
     
