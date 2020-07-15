@@ -66,11 +66,11 @@ d)	Maps: The Maps folder. It containing 05 sample maps for training. Information
     
     - Select a training map as follows:
     
-    - Function to select a map in MinerEnv.py file: send_map_info(request)
-     
-    - Request structure: {map_name},{init_x},{init_y},{init_energy}
-    
-    - For example, request = "map2,4,5,1000" means that map2 will be used for the match,the players will start from position (x = 4, y = 5) with an initial energy of 1000.
+        + Function to select a map in MinerEnv.py file: send_map_info(request)
+
+        + Request structure: {map_name},{init_x},{init_y},{init_energy}
+
+        + For example, request = "map2,4,5,1000" means that map2 will be used for the match,the players will start from position (x = 4, y = 5) with an initial energy of 1000.
 
 e)	Bots (not the bots used in the preliminary round): 3 sample bots (bot1.py, bot2.py, and bot3.py) are provided to teams. Teams can create bots to suit their training strategies.  The bots will be put into play in the game environment via GAME_SOCKET_DUMMY.py. You will need to declare the bots (import Botx) and initialize them (init_bots()). Some of the main functions in the bot source code are as follows:
 
