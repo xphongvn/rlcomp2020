@@ -124,6 +124,7 @@ class GameSocket:
             bot.info.posx = self.user.posx
             bot.info.posy = self.user.posy
             bot.info.energy = self.user.energy
+            bot.info.lastAction = -1
             bot.info.status = PlayerInfo.STATUS_PLAYING
             bot.info.score = 0
             self.stepState.players.append(bot.info)
@@ -230,6 +231,7 @@ class GameSocket:
             for bot in self.bots:
                 if bot.info.status == PlayerInfo.STATUS_PLAYING:
                     action = bot.next_action()
+                    bot.info.lastAction = action
                     # print("Bot Action: ", action)
                     self.step_action(bot.info, action)
             self.action_5_craft()
@@ -260,6 +262,7 @@ class GameSocket:
             user.energy -= 10
             if user.energy <= 0:
                 user.status = PlayerInfo.STATUS_ELIMINATED_OUT_OF_ENERGY
+                user.lastAction = 6 #eliminated
         else:
             user.energy -= 5
             if user.energy > 0:
@@ -272,12 +275,14 @@ class GameSocket:
                     self.craftMap[key] = 1
             else:
                 user.status = PlayerInfo.STATUS_ELIMINATED_OUT_OF_ENERGY
+                user.lastAction = 6 #eliminated
 
     def action_0_left(self, user):  # user go left
         user.freeCount = 0
         user.posx = user.posx - 1
         if user.posx < 0:
             user.status = PlayerInfo.STATUS_ELIMINATED_WENT_OUT_MAP
+            user.lastAction = 6 #eliminated
         else:
             self.go_to_pos(user)
 
@@ -286,6 +291,7 @@ class GameSocket:
         user.posx = user.posx + 1
         if user.posx >= self.userMatch.gameinfo.width:
             user.status = PlayerInfo.STATUS_ELIMINATED_WENT_OUT_MAP
+            user.lastAction = 6 #eliminated
         else:
             self.go_to_pos(user)
 
@@ -294,6 +300,7 @@ class GameSocket:
         user.posy = user.posy - 1
         if user.posy < 0:
             user.status = PlayerInfo.STATUS_ELIMINATED_WENT_OUT_MAP
+            user.lastAction = 6 #eliminated
         else:
             self.go_to_pos(user)
 
@@ -302,6 +309,7 @@ class GameSocket:
         user.posy = user.posy + 1
         if user.posy >= self.userMatch.gameinfo.height:
             user.status = PlayerInfo.STATUS_ELIMINATED_WENT_OUT_MAP
+            user.lastAction = 6 #eliminated
         else:
             self.go_to_pos(user)
 
@@ -356,6 +364,7 @@ class GameSocket:
 
     def invalidAction(self, user):
         user.status = PlayerInfo.STATUS_ELIMINATED_INVALID_ACTION
+        user.lastAction = 6 #eliminated
 
     def go_to_pos(self, user):  # player move to cell(x,y)
         if self.map[user.posy][user.posx] == -1:
@@ -373,6 +382,7 @@ class GameSocket:
             user.energy -= 4
         if user.energy <= 0:
             user.status = PlayerInfo.STATUS_ELIMINATED_OUT_OF_ENERGY
+            user.lastAction = 6 #eliminated
 
     def add_changed_obstacle(self, x, y, t, v):
         added = False

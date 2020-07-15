@@ -1,3 +1,6 @@
+from warnings import simplefilter 
+simplefilter(action='ignore', category=FutureWarning)
+
 import sys
 import numpy as np
 from GAME_SOCKET import GameSocket #in testing version, please use GameSocket instead of GameSocketDummy

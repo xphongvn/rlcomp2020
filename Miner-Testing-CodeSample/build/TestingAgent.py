@@ -1,3 +1,6 @@
+from warnings import simplefilter 
+simplefilter(action='ignore', category=FutureWarning)
+
 import sys
 from keras.models import model_from_json
 from MinerEnv import MinerEnv
