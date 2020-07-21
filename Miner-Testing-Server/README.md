@@ -1,3 +1,28 @@
+***(English version, Vietnamese below)***
+
+# DUMMY TESTING SERVER
+This is a server that assists players to check their agents' running results.
+ 
+## Descriptions
+The Server has been simulated for the player to run on a map named Verify, which is used to verify the player’s code when uploading the source code to the system.
+ 
+## How to Run
+
+Start server: 
+**Python3 DUMMY_SERVER. py {Port}**
+ 
+Example: **Python3 DUMMY_SERVER. PY 1234**
+ 
+Run client:
+**./run.sh localhost {port}**
+ 
+Example: **./run.sh localhost 1234**
+ 
+## Note
+This is only a simulation server to help players quickly check the agent's quality, but does not guarantee accurate results in real-world environments.
+
+
+
 # DUMMY TESTING SERVER
 Đây là phần giả lập server giúp cho người chơi có thể kiểm tra kết quả chạy của agent của mình.
 
