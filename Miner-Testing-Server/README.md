@@ -6,11 +6,11 @@ Server đã được giả lập để người chơi có thể chạy trên b�
 
 ## Cách chạy
 
-###Khởi động server: 
+Khởi động server: 
 **python3 DUMMY_SERVER.py {port}**
 Ví dụ: **python3 DUMMY_SERVER.py 1234**
 
-###Chạy client:
+Chạy client:
 **./run.sh localhost {port}**
 Ví dụ: **./run.sh localhost 1234**
 
