@@ -120,6 +120,6 @@ class State:
 
         self.mapInfo.update(new_state["golds"], new_state["changedObstacles"])
         self.players = new_state["players"]
-        for i in range(len(self.players), 4, 1):
+        for i in range(len(self.players) + 1, 5, 1):
             self.players.append({"playerId": i, "posx": self.x, "posy": self.y})
         self.stepCount = self.stepCount + 1
