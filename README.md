@@ -19,7 +19,8 @@ During the competition, the following State information will be returned after a
           "posy": Agent's Y position, integer;
           "score": Agent's amount of gold mined, integer;
           "energy": Agent's amount of remaining energy, integer;
-          "lastAction": the last action, integer
+          "lastAction": the last action, integer;
+          "status": Agent's status - playing or eliminated, integer
   }
   ```
 -	Information about the remaining obstacles on the map (their position and the amount of energy that will be subtracted when an Agent passes by).
@@ -221,11 +222,22 @@ The environment can be installed in two ways.:
 
 Installation instructions:
 - Python 3.6.9 (Ubuntu) – python 3.7.4 (windows)
-- Tensorflow 1.14.0
+- Tensorflow 1.14.0 or 2.2.0
 - Keras 2.3.1
 - Numpy 1.18.4
 - Pandas 0.15
 - PyTorch 1.5.0
+- joblib 0.16.0
+- ray 0.8.6 (ray[rllib], ray[tune])
+- requests 2.24.0
+- semver 2.10.2
+- tf-agents 0.3.0 
+- Pyqlearning v1.2.4
+- Mushroom-RL v1.4.0
+- gym 0.17.2
+- opencv-python 4.2.0.34
+- prettytable 0.7.2
+- yacs 0.1.7
 
 1. Installing directly
    1. Windows
@@ -287,6 +299,19 @@ Installation instructions:
                 pip3 install pandas==1.0.4
                 pip3 install tensorflow==1.14.0
                 pip3 install torch==1.5.0+cpu torchvision==0.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+                pip3 install joblib==0.16.0
+                pip3 install ray==0.8.6
+                pip3 install ray[rllib]
+                pip3 install ray[tune]
+                pip3 install requests==2.24.0
+                pip3 install semver==2.10.2
+                pip3 install tf-agents==0.3.0 
+                pip3 install Pyqlearning==v1.2.4
+                pip3 install Mushroom-RL==v1.4.0
+                pip3 install gym==0.17.2
+                pip3 install opencv-python==4.2.0.34
+                pip3 install prettytable==0.7.2
+                pip3 install yacs==0.1.7
                 ```
             - Run code: the code is run in the virtual environment set up in the previous step, therefore, make sure to activate the virtual environment in advance.
    2. Ubuntu 18.04
@@ -344,6 +369,19 @@ Installation instructions:
                 pip3 install pandas==0.15
                 pip3 install tensorflow==1.14.0
                 pip3 install torch==1.5.0+cpu torchvision==0.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+                pip3 install joblib==0.16.0
+                pip3 install ray==0.8.6
+                pip3 install ray[rllib]
+                pip3 install ray[tune]
+                pip3 install requests==2.24.0
+                pip3 install semver==2.10.2
+                pip3 install tf-agents==0.3.0 
+                pip3 install Pyqlearning==v1.2.4
+                pip3 install Mushroom-RL==v1.4.0
+                pip3 install gym==0.17.2
+                pip3 install opencv-python==4.2.0.34
+                pip3 install prettytable==0.7.2
+                pip3 install yacs==0.1.7
                 ```
             - Run code: the code is run in the virtual environment set up in the previous step, therefore, make sure to activate the virtual environment in advance.
 2. Using Docker
@@ -370,7 +408,7 @@ Installation instructions:
 
             Execute the following command to pull image
             ```
-            docker pull codelearnio/miner-ai:training
+            docker pull codelearnio/miner-ai:training-v4
             ```
 
             Verify if the image has been successfully pulled by the following command: 
@@ -456,7 +494,8 @@ Trong quá trình thi đấu, thông tin trạng thái (State) được trả v�
         "posy": vị trí theo tọa độ y của agent, kiểu integer;
         "score": số vàng agent đào được, kiểu integer;
         "energy": số năng lượng còn lại của agent, kiểu integer;
-        "lastAction": lưu action vừa thực hiện, kiểu integer
+        "lastAction": lưu action vừa thực hiện, kiểu integer;
+        "status": trạng thái của agent - đang chơi hay đã bị loại, kiểu integer
   }
   ```
 - Thông tin các vật cản còn lại trên bản đồ (vị trí và số năng lượng sẽ bị trừ khi một agent đi qua).
@@ -649,11 +688,22 @@ Trong này, chúng tôi sẽ hướng dẫn các bạn cài đặt môi trườn
 
 Nội dung cài đặt:
 - Python 3.6.9 (Ubuntu) – python 3.7.4 (windows)
-- Tensorflow 1.14.0
+- Tensorflow 1.14.0 hoặc 2.2.0
 - Keras 2.3.1
 - Numpy 1.18.4
 - Pandas 0.15
 - PyTorch 1.5.0
+- joblib 0.16.0
+- ray 0.8.6 (ray[rllib], ray[tune])
+- requests 2.24.0
+- semver 2.10.2
+- tf-agents 0.3.0 
+- Pyqlearning v1.2.4
+- Mushroom-RL v1.4.0
+- gym 0.17.2
+- opencv-python 4.2.0.34
+- prettytable 0.7.2
+- yacs 0.1.7
 
 1. Run trực tiếp
    1. Windows
@@ -715,6 +765,19 @@ Nội dung cài đặt:
                 pip3 install pandas==1.0.4
                 pip3 install tensorflow==1.14.0
                 pip3 install torch==1.5.0+cpu torchvision==0.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+                pip3 install joblib==0.16.0
+                pip3 install ray==0.8.6
+                pip3 install ray[rllib]
+                pip3 install ray[tune]
+                pip3 install requests==2.24.0
+                pip3 install semver==2.10.2
+                pip3 install tf-agents==0.3.0 
+                pip3 install Pyqlearning==v1.2.4
+                pip3 install Mushroom-RL==v1.4.0
+                pip3 install gym==0.17.2
+                pip3 install opencv-python==4.2.0.34
+                pip3 install prettytable==0.7.2
+                pip3 install yacs==0.1.7
                 ```
             - Run code: code được run ở môi trường ảo mà bạn cài ở step trước, vì thế đừng quên kích hoạt môi trường ảo trước khi run nhé!
    2. Ubuntu 18.04
@@ -772,6 +835,19 @@ Nội dung cài đặt:
                 pip3 install pandas==0.15
                 pip3 install tensorflow==1.14.0
                 pip3 install torch==1.5.0+cpu torchvision==0.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+                pip3 install joblib==0.16.0
+                pip3 install ray==0.8.6
+                pip3 install ray[rllib]
+                pip3 install ray[tune]
+                pip3 install requests==2.24.0
+                pip3 install semver==2.10.2
+                pip3 install tf-agents==0.3.0 
+                pip3 install Pyqlearning==v1.2.4
+                pip3 install Mushroom-RL==v1.4.0
+                pip3 install gym==0.17.2
+                pip3 install opencv-python==4.2.0.34
+                pip3 install prettytable==0.7.2
+                pip3 install yacs==0.1.7
                 ```
             - Run code: code được run ở môi trường ảo mà bạn cài ở step trước, vì thế đừng quên kích hoạt môi trường ảo trước khi run nhé!
 2. Sử dụng docker
@@ -798,7 +874,7 @@ Nội dung cài đặt:
 
             Thực hiện lệnh sau để pull image về
             ```
-            docker pull codelearnio/miner-ai:training
+            docker pull codelearnio/miner-ai:training-v4
             ```
 
             Kiểm tra image đã được pull về thành công bằng lệnh: 
