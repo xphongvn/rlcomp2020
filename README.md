@@ -231,7 +231,7 @@ Installation instructions:
 - ray 0.8.6 (ray[rllib], ray[tune])
 - requests 2.24.0
 - semver 2.10.2
-- tf-agents 0.3.0 
+- tf-agents 0.3.0 (0.5.0 on Tensorflow 2.2.0)
 - Pyqlearning v1.2.4
 - Mushroom-RL v1.4.0
 - gym 0.17.2
@@ -408,7 +408,7 @@ Installation instructions:
 
             Execute the following command to pull image
             ```
-            docker pull codelearnio/miner-ai:training-v4
+            docker pull codelearnio/miner-ai:training-v5
             ```
 
             Verify if the image has been successfully pulled by the following command: 
@@ -697,7 +697,7 @@ Nội dung cài đặt:
 - ray 0.8.6 (ray[rllib], ray[tune])
 - requests 2.24.0
 - semver 2.10.2
-- tf-agents 0.3.0 
+- tf-agents 0.3.0 (0.5.0 với Tensorflow 2.2.0)
 - Pyqlearning v1.2.4
 - Mushroom-RL v1.4.0
 - gym 0.17.2
@@ -874,7 +874,7 @@ Nội dung cài đặt:
 
             Thực hiện lệnh sau để pull image về
             ```
-            docker pull codelearnio/miner-ai:training-v4
+            docker pull codelearnio/miner-ai:training-v5
             ```
 
             Kiểm tra image đã được pull về thành công bằng lệnh: 
