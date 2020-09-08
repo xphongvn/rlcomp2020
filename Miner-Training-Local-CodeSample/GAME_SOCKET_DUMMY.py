@@ -158,7 +158,7 @@ class GameSocket:
         self.userMatch = self.map_info(self.map)
         #print(self.map)
         self.stepState.golds = self.userMatch.gameinfo.golds
-        self.map = json.loads(self.maps[self.mapId])
+        #self.map = json.loads(self.maps[self.mapId])
         self.energyOnMap = json.loads(self.maps[self.mapId])
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
