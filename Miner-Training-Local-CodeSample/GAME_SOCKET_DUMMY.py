@@ -156,6 +156,7 @@ class GameSocket:
         self.mapId = id
         self.map = json.loads(self.maps[self.mapId])
         self.userMatch = self.map_info(self.map)
+        #print(self.map)
         self.stepState.golds = self.userMatch.gameinfo.golds
         self.map = json.loads(self.maps[self.mapId])
         self.energyOnMap = json.loads(self.maps[self.mapId])
@@ -189,6 +190,7 @@ class GameSocket:
                     g.posx = j
                     g.posy = i
                     g.amount = (randrange(min(25, max(int(max_gold_num/50), 1))) + 1) * 50
+                    self.map[i][j] = g.amount
                     max_gold_num -= g.amount
                     userMatch.gameinfo.golds.append(g)
                 else:  # obstacles
